@@ -58,7 +58,7 @@ console.log(nextTime)
       //   setUrl(`${apiUrl}${city}`);
       // }, [city]);
 
-
+ 
       const renderItem = ({ item }) => {
         return <Card item={item}/>
       };
