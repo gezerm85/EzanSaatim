@@ -14,11 +14,8 @@ const Tab = createBottomTabNavigator();
 const BottomTabs = () => {
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        activeTintColor: '#444db3',
-        inactiveTintColor: 'gray', 
-        
-      }}
+      
+
       screenOptions={{
         headerStyle: {
           backgroundColor: '#444db3',
@@ -29,7 +26,9 @@ const BottomTabs = () => {
         headerTitleStyle:{
           fontWeight: 'semibold',
           fontSize: 23,
-        }
+        },
+        tabBarActiveTintColor: '#444db3',
+        tabBarInactiveTintColor: '#969696',
       }}
     >
       <Tab.Screen options={{tabBarIcon:({color})=>(
