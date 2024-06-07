@@ -4,7 +4,7 @@ export default StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#fff',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     title:{
         fontSize: 30,
@@ -45,6 +45,10 @@ export default StyleSheet.create({
         position: 'relative',
         top: 18,
         right: 15,
+      },
+      flatContainer:{
+        paddingHorizontal: 25,
+        marginBottom: 15,
       }
 
 })

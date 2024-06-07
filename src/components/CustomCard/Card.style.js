@@ -14,6 +14,8 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         gap: 15,
+        borderRadius: 15,
+
     },
         titleHour:{
         fontWeight: 'bold',

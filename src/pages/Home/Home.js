@@ -7,6 +7,9 @@ import RNPickerSelect from 'react-native-picker-select';
 import moment from 'moment';
 import Clock from '../../components/Clock/Clock'
 import { AntDesign } from '@expo/vector-icons';
+import Loading from '../../components/Loading/Loading'
+import Error from '../../components/Error/Error'
+
 
 const apiUrl ="https://api.collectapi.com/pray/all?data.city="
 
@@ -15,53 +18,57 @@ const apiUrl ="https://api.collectapi.com/pray/all?data.city="
 const Home = () => {
   const [city, setCity] = useState('gaziantep');
   const [url, setUrl] = useState(`${apiUrl}${city}`);
-  const [data, setData] = useState({
-    "result": [{"saat": "03:20", "vakit": "İmsak"}, {"saat": "05:04", "vakit": "Güneş"}, {"saat": "12:34", "vakit": "Öğle"}, {"saat": "16:25", "vakit": "İkindi"}, {"saat": "19:54", "vakit": "Akşam"}, {"saat": "21:30", "vakit": "Yatsı"}]
-  })
+
+
+  const {data, loading, error} = useFetch(url,
+    {
+        headers: {
+          'content-type': 'application/json',
+          'authorization': 'apikey 7dCHhADQi7QYfLKCkcyfWx:6sPgImQySbItNoVcsFLhJ3',
+        },
+      })
+
+      
+
+      useEffect(() => {
+        setUrl(`${apiUrl}${city}`);
+      }, [city, nextTime]);
 
 
 
   let nextTime = '';
 
   const now = new Date();
-const currentTime = now.getHours() * 60 + now.getMinutes(); // Şu anki saati dakika cinsinden al
-const times = data.result.map(item => item.saat.split(':').map(Number)); // Saatleri ayrıştır ve sayısal değerlere dönüştür
+const currentTime = now.getHours() * 60 + now.getMinutes(); 
+const times = data.result && data.result.map(item => item.saat.split(':').map(Number));
 
 for (let i = 0; i < times.length; i++) {
   const [hour, minute] = times[i];
-  const timeInMinutes = hour * 60 + minute; // Vakti dakika cinsinden al
-  if (timeInMinutes > currentTime) { // Şu anki zamandan sonra olan ilk vakti bul
-    nextTime = data.result[i].saat;; // İlgili vaktin saati
-    break; // Bulduktan sonra döngüyü sonlandır
+  const timeInMinutes = hour * 60 + minute; 
+  if (timeInMinutes > currentTime) { 
+    nextTime = data.result[i].saat;; 
+    break; 
   }
 }
 
 if (!nextTime || moment().isAfter(moment(nextTime, 'HH:mm'))) {
-  nextTime = data.result[0].saat; // İlk vakti alırız
+  nextTime = data.result[0].saat;
 }
 
 console.log(nextTime)
+
     
 
-  // const {data} = useFetch(url,
-  //   {
-  //       headers: {
-  //         'content-type': 'application/json',
-  //         'authorization': 'apikey 2EKqpGBZT799DrlVLrpR0g:71k5c2RIxO2SnL3g5PU8U2',
-  //       },
-  //     })
 
-      // console.log("data",data)
-      
-
-      // useEffect(() => {
-      //   setUrl(`${apiUrl}${city}`);
-      // }, [city]);
 
  
       const renderItem = ({ item }) => {
         return <Card item={item}/>
       };
+
+      
+      if (loading) return <Loading />;
+      if (error) return <Error />; 
 
   return (
     <View style={styles.container}>
@@ -89,7 +96,7 @@ console.log(nextTime)
           </View>
           
       </View>
-        <View>
+        <View style={styles.flatContainer}>
         <FlatList 
         data={data.result}
         renderItem={renderItem}
